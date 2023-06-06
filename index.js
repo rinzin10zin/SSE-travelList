@@ -3,7 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import { nanoid } from "nanoid";
-import handleServerSentEvents from "./sse";
+import handleServerSentEvents from "./sse.js";
 
 const app = express();
 
