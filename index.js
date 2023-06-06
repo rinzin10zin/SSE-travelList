@@ -41,11 +41,8 @@ app.get("/sse", (req, res) => {
     "Cache-Control": "no-cache",
   };
   res.writeHead(200, headers);
-  const data = `data: ${JSON.stringify({
-    stuff,
-    nrOfClients: clients.length,
-  })} \n\n`;
-  res.write(data);
+
+  sendToAllClients();
 
   const client = {
     time: Date.now(),
@@ -56,15 +53,19 @@ app.get("/sse", (req, res) => {
     res: res,
   });
 
-  setInterval(() => {
-    if (clients.length > 0) {
-      res.write(`data \n\n`);
-    }
-  }, 5000);
+  // setInterval(() => {
+  //   if (clients.length > 0) {
+  //     res.write(`data \n\n`);
+  //   }
+  // }, 5000);
 
   req.on("close", () => {
     console.log(`Connection closed from ${client.name}`);
-    clients.splice(clients.findIndex((c) => c.time === client.time));
+    clients.splice(
+      clients.findIndex((c) => c.time === client.time),
+      1
+    );
+    sendToAllClients();
   });
 });
 
