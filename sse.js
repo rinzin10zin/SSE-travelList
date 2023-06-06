@@ -1,4 +1,4 @@
-export default (req, res) => {
+export default (stuff, clients) => (req, res) => {
   const headers = {
     "Content-Type": "text/event-stream",
     Connection: "keep-alive",
