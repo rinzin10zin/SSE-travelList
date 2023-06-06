@@ -41,7 +41,10 @@ app.get("/sse", (req, res) => {
     "Cache-Control": "no-cache",
   };
   res.writeHead(200, headers);
-  const data = `data: ${JSON.stringify(stuff)} \n\n`;
+  const data = `data: ${JSON.stringify({
+    stuff,
+    nrOfClients: clients.length,
+  })} \n\n`;
   res.write(data);
 
   const client = {
@@ -66,7 +69,14 @@ app.get("/sse", (req, res) => {
 });
 
 function sendToAllClients() {
-  clients.forEach((c) => c.res.write(`data: ${JSON.stringify(stuff)} \n\n`));
+  clients.forEach((c) =>
+    c.res.write(
+      `data: ${JSON.stringify({
+        stuff,
+        nrOfClients: clients.length,
+      })} \n\n`
+    )
+  );
 }
 
 app.post("/stuff", (req, res) => {
