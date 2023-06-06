@@ -42,8 +42,6 @@ app.get("/sse", (req, res) => {
   };
   res.writeHead(200, headers);
 
-  sendToAllClients();
-
   const client = {
     time: Date.now(),
     name: req.query.name,
@@ -52,6 +50,8 @@ app.get("/sse", (req, res) => {
     ...client,
     res: res,
   });
+
+  sendToAllClients();
 
   // setInterval(() => {
   //   if (clients.length > 0) {
